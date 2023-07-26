@@ -1,8 +1,9 @@
 'use client';
 
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import type { Session } from '@supabase/auth-helpers-nextjs';
 
-export default function AuthButton() {
+export default function AuthButtonClient({ session }: { session: Session | null }) {
   const supabase = createClientComponentClient();
 
   const handleSignin = async () => {
@@ -18,10 +19,9 @@ export default function AuthButton() {
     await supabase.auth.signOut();
   };
 
-  return (
-    <>
-      <button onClick={handleSignin}>Login</button>
-      <button onClick={handleSignout}>Logout</button>
-    </>
+  return session ? (
+    <button onClick={handleSignout}>Logout</button>
+  ) : (
+    <button onClick={handleSignin}>Login</button>
   );
 }
