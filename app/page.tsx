@@ -5,13 +5,20 @@ import { redirect } from 'next/navigation';
 
 export default async function Home() {
   const supabase = createServerComponentClient<Database>({ cookies });
-  const { data: { session } } = await supabase.auth.getSession()
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
 
-  if(!session) {
-    redirect('/login')
+  if (!session) {
+    redirect('/login');
   }
 
-  const { data: tweets } = await supabase.from('tweets').select();
+  const { data: tweets } = await supabase
+    .from('tweets')
+    .select("*, profiles(*)");
+
+    console.log(tweets);
+    
 
   return (
     <>
