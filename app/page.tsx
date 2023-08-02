@@ -17,7 +17,7 @@ export default async function Home() {
 
   const { data } = await supabase
     .from("tweets")
-    .select("*, profiles(*), likes(user_id)");
+    .select("*, author: profiles(*), likes(user_id)");
 
   const tweets =
     data?.map((tweet) => {
@@ -38,7 +38,7 @@ export default async function Home() {
         return (
           <div key={tweet.id}>
             <p>
-              {tweet?.profiles?.name} - {tweet?.profiles?.username}
+              {tweet?.author?.name} - {tweet?.author?.username}
             </p>
             <p>{tweet.title}</p>
             <Likes tweet={tweet} />
